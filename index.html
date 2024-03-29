@@ -31,7 +31,7 @@
     fetchWeatherData();
 
     function fetchWeatherData() {
-      fetch('https://polar-lake-41582-635243186dd0.herokuapp.com/weather') // Update the URL to match your server location
+      fetch('http://localhost:3000/weather') // Update the URL to match your server location
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
