@@ -1,6 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors'); // Import CORS middleware
+
 const app = express();
+app.use(cors()); // Use CORS middleware
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/weather_db', { useNewUrlParser: true, useUnifiedTopology: true })

@@ -27,8 +27,8 @@
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // Fetch real-time weather data from the REST Web API
-    fetch('https://polar-lake-41582.herokuapp.com/weather')
+    // Fetch real-time weather data from the backend server
+    fetch('http://localhost:3000/weather') // Update the URL to match your server location
       .then(response => response.json())
       .then(data => {
         // Add markers for each weather station with temperature, humidity, and air pressure
