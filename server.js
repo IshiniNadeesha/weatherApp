@@ -1,18 +1,34 @@
-// server.js
-
 const express = require('express');
+const mongoose = require('mongoose');
 const app = express();
 
-// Dummy weather data for demonstration
-const weatherData = [
-  { district: 'Colombo', temperature: 28, humidity: 80, air_pressure: 1010, latitude: 6.9271, longitude: 79.8612 },
-  { district: 'Kandy', temperature: 25, humidity: 75, air_pressure: 1015, latitude: 7.2906, longitude: 80.6337 },
-  // Add more weather data as needed
-];
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/weather_db', { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('Error connecting to MongoDB:', err));
+
+// Define Weather schema
+const weatherSchema = new mongoose.Schema({
+  district: String,
+  temperature: Number,
+  humidity: Number,
+  air_pressure: Number,
+  latitude: Number,
+  longitude: Number,
+  timestamp: { type: Date, default: Date.now }
+});
+
+const Weather = mongoose.model('Weather', weatherSchema);
 
 // Endpoint to fetch weather data
-app.get('/weather', (req, res) => {
-  res.json(weatherData);
+app.get('/weather', async (req, res) => {
+  try {
+    const weatherData = await Weather.find().sort({ timestamp: -1 }).limit(10); // Example: Retrieve latest 10 records
+    res.json(weatherData);
+  } catch (error) {
+    console.error('Error fetching weather data:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 const PORT = process.env.PORT || 3000;
