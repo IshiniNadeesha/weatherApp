@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real-Time Weather Map</title>
+  <!-- Include Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <!-- Define styles for the map container -->
+  <style>
+    #map { height: 600px; }
+  </style>
+</head>
+<body>
+  <h1>Real-Time Weather Map</h1>
+  <!-- Create a div element to hold the map -->
+  <div id="map"></div>
+
+  <!-- Include Leaflet JavaScript -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Initialize the map
+    var map = L.map('map').setView([7.8731, 80.7718], 7); // Set initial view to Sri Lanka
+
+    // Add a tile layer for the base map
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Fetch real-time weather data from the REST Web API
+    fetch('https://your-api-url/weather')
+      .then(response => response.json())
+      .then(data => {
+        // Add markers for each weather station with temperature, humidity, and air pressure
+        data.forEach(station => {
+          L.marker([station.latitude, station.longitude]).addTo(map)
+            .bindPopup(`
+              <b>District:</b> ${station.district}<br>
+              <b>Temperature:</b> ${station.temperature}°C<br>
+              <b>Humidity:</b> ${station.humidity}%<br>
+              <b>Air Pressure:</b> ${station.air_pressure} hPa
+            `);
+        });
+      })
+      .catch(error => console.error('Error fetching weather data:', error));
+  </script>
+</body>
+</html>
