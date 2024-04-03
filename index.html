@@ -4,15 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Real-Time Weather Map</title>
+  <!-- Include Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Include Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <!-- Define styles for the map container -->
   <style>
-    #map { height: 600px; }
+    #map { 
+      height: 500px; 
+      width: 800px;
+      border-radius: 10px;
+      margin: auto; /* Center horizontally */
+    }
   </style>
+  <nav class="navbar" style="background-color: #9dd3db;">
+    <div class="container-fluid">
+      <span class="navbar-brand mb-0 h1">Real-Time Weather Map</span>
+    </div>
+  </nav>
 </head>
 <body>
-  <h1>Real-Time Weather Map</h1>
+
   <!-- Create a div element to hold the map -->
   <div id="map"></div>
 
@@ -20,38 +32,81 @@
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
     // Initialize the map
-    var map = L.map('map').setView([7.8731, 80.7718], 7); // Set initial view to Sri Lanka
+    var map = L.map('map').setView([7.8731, 80.7718], 7); // Set initial view to world map
 
     // Add a tile layer for the base map
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // Fetch real-time weather data from the backend server
-    fetchWeatherData();
+    // Array of 25 cities with their coordinates
+    var cities = [
+      { name: 'Colombo', lat: 6.927079, lon: 79.861244 },
+      { name: 'Kandy', lat: 7.2906, lon: 80.6337 },
+      { name: 'Trincomalee', lat: 8.592200, lon: 81.196793 },
+      { name: 'Jaffna', lat: 9.6615, lon: 80.0255 },
+      { name: 'Galle', lat: 6.053519, lon: 80.220978 },
+      { name: 'Kilinochchi', lat: 9.3803, lon: 80.3770 },
+      { name: 'Mannar', lat: 8.9810, lon: 79.9044 },
+      { name: 'Mullaitivu', lat: 9.2671, lon: 80.8142 },
+      { name: 'Vavuniya', lat: 8.7542, lon: 80.4982 },
+      { name: 'Puttalam', lat: 8.0408, lon: 79.8394 },
+      { name: 'Kurunegala', lat: 7.4818, lon: 80.3609 },
+      { name: 'Gampaha', lat: 7.0840, lon: 80.0098 },
+      { name: 'Kalutara', lat: 6.5854, lon: 79.9607 },
+      { name: 'Anuradhapura', lat: 8.3114, lon: 80.4037 },
+      { name: 'Polonnaruwa', lat: 7.9403, lon: 81.0188 },
+      { name: 'Matale', lat: 7.4675, lon: 80.6234 },
+      { name: 'Nuwara Eliya', lat: 6.9497, lon: 80.7891 },
+      { name: 'Kegalle', lat: 7.2513, lon: 80.3464 },
+      { name: 'Batticaloa', lat: 7.7249, lon: 81.6967 },
+      { name: 'Ampara', lat: 7.3018, lon: 81.6747 },
+      { name: 'Badulla', lat: 6.9934, lon: 81.0550 },
+      { name: 'Monaragala', lat: 6.8906, lon: 81.3454 },
+      { name: 'Hambantota', lat: 6.1429, lon: 81.1212 },
+      { name: 'Matara', lat: 5.9496, lon: 80.5469 },
+      { name: 'Ratnapura', lat: 6.7056, lon: 80.3847 }
+    ];
 
-function fetchWeatherData() {
-  fetch('http://localhost:3000/weather') // Update the URL to match your backend server location
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(data => {
-      // Add markers for each weather station with temperature, humidity, and air pressure
-      data.forEach(station => {
-        L.marker([station.latitude, station.longitude]).addTo(map)
-          .bindPopup(`
-            <b>District:</b> ${station.district}<br>
-            <b>Temperature:</b> ${station.temperature}°C<br>
-            <b>Humidity:</b> ${station.humidity}%<br>
-            <b>Air Pressure:</b> ${station.air_pressure} hPa
-          `);
+    // Function to fetch weather data for each city and add markers to the map
+    function fetchWeatherData() {
+      cities.forEach(city => {
+        fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${city.lat}&lon=${city.lon}&appid=39961e7bcb1735ec8409d1599b0a5aab&units=metric`)
+          .then(response => response.json())
+          .then(data => {
+            // Extract relevant weather information
+            var temperature = data.main.temp;
+            var humidity = data.main.humidity;
+            var pressure = data.main.pressure;
+
+            // Choose marker icon based on temperature
+            var markerIconUrl = temperature >= 28 ? './sun.png' : './cloud.png';
+
+            // Create a custom marker icon
+            var markerIcon = L.icon({
+              iconUrl: markerIconUrl,
+              iconSize: [40, 40],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              tooltipAnchor: [16, -28]
+            });
+
+            // Create a marker for the city with weather information as popup content
+            var marker = L.marker([city.lat, city.lon], { icon: markerIcon }).addTo(map)
+              .bindPopup(`
+                <b>${city.name}</b><br>
+                <b>Temperature:</b> ${temperature}°C<br>
+                <b>Humidity:</b> ${humidity}%<br>
+                <b>Air Pressure:</b> ${pressure} hPa
+              `);
+          })
+          .catch(error => console.error('Error fetching weather data:', error));
       });
-    })
-    .catch(error => console.error('Error fetching weather data:', error));
-}
+    }
+
+    // Initially fetch weather data and update every 5 minutes (300000 milliseconds)
+    fetchWeatherData();
+    setInterval(fetchWeatherData, 300000); // Update every 5 minutes
   </script>
 </body>
 </html>
