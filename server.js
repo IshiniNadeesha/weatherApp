@@ -20,7 +20,7 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:3000', 
+        url: 'https://polar-lake-41582-635243186dd0.herokuapp.com', 
         description: 'Development server',
       },
     ],
