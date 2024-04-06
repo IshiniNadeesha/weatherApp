@@ -60,6 +60,30 @@ const Weather = mongoose.model('Weather', weatherSchema);
 // List of cities with their coordinates
 const cities = [
   { name: 'Colombo', lat: 6.927079, lon: 79.861244 },
+      { name: 'Kandy', lat: 7.2906, lon: 80.6337 },
+      { name: 'Trincomalee', lat: 8.592200, lon: 81.196793 },
+      { name: 'Jaffna', lat: 9.6615, lon: 80.0255 },
+      { name: 'Galle', lat: 6.053519, lon: 80.220978 },
+      { name: 'Kilinochchi', lat: 9.3803, lon: 80.3770 },
+      { name: 'Mannar', lat: 8.9810, lon: 79.9044 },
+      { name: 'Mullaitivu', lat: 9.2671, lon: 80.8142 },
+      { name: 'Vavuniya', lat: 8.7542, lon: 80.4982 },
+      { name: 'Puttalam', lat: 8.0408, lon: 79.8394 },
+      { name: 'Kurunegala', lat: 7.4818, lon: 80.3609 },
+      { name: 'Gampaha', lat: 7.0840, lon: 80.0098 },
+      { name: 'Kalutara', lat: 6.5854, lon: 79.9607 },
+      { name: 'Anuradhapura', lat: 8.3114, lon: 80.4037 },
+      { name: 'Polonnaruwa', lat: 7.9403, lon: 81.0188 },
+      { name: 'Matale', lat: 7.4675, lon: 80.6234 },
+      { name: 'Nuwara Eliya', lat: 6.9497, lon: 80.7891 },
+      { name: 'Kegalle', lat: 7.2513, lon: 80.3464 },
+      { name: 'Batticaloa', lat: 7.7249, lon: 81.6967 },
+      { name: 'Ampara', lat: 7.3018, lon: 81.6747 },
+      { name: 'Badulla', lat: 6.9934, lon: 81.0550 },
+      { name: 'Monaragala', lat: 6.8906, lon: 81.3454 },
+      { name: 'Hambantota', lat: 6.1429, lon: 81.1212 },
+      { name: 'Matara', lat: 5.9496, lon: 80.5469 },
+      { name: 'Ratnapura', lat: 6.7056, lon: 80.3847 }
   // Other cities omitted for brevity
 ];
 
