@@ -4,4 +4,4 @@ Student Index - COBSCCOMP4Y222P-058
 
 Live map URL - https://ishiimap.static.domains/test/index.html
 
-Project Over view video - https://drive.google.com/file/d/1mWuvSbVRm_VpBJj88uymhks3SuO4831W/view?usp=drive_link
+Project Overview video - https://drive.google.com/file/d/1mWuvSbVRm_VpBJj88uymhks3SuO4831W/view?usp=drive_link
